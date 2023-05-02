@@ -1,0 +1,260 @@
+Loaded image data (378, 504, 3, 20) [378.         504.         407.56579161]
+Loaded ./data/nerf_llff_data/fern 16.985296178676084 80.00209740336334
+recentered (3, 5)
+[[ 1.0000000e+00  0.0000000e+00  0.0000000e+00  1.4901161e-09]
+ [ 0.0000000e+00  1.0000000e+00 -1.8730975e-09 -9.6857544e-09]
+ [-0.0000000e+00  1.8730975e-09  1.0000000e+00  0.0000000e+00]]
+Data:
+(20, 3, 5) (20, 378, 504, 3) (20, 2)
+HOLDOUT view is 12
+Loaded llff (20, 378, 504, 3) (120, 3, 5) [378.     504.     407.5658] ./data/nerf_llff_data/fern
+Auto LLFF holdout, 8
+DEFINING BOUNDS
+NEAR FAR 0.0 1.0
+Found ckpts ['./logs/fern_test/200000.tar']
+Reloading from ./logs/fern_test/200000.tar
+RENDER ONLY
+test poses shape torch.Size([120, 3, 5])
+ncu running
+0 0.0025527477264404297
+torch.Size([378, 504, 3]) torch.Size([378, 504])
+savedir is present ./logs/fern_test/renderonly_path_200000
+1 7.118503570556641
+savedir is present ./logs/fern_test/renderonly_path_200000
+2 7.970095872879028
+savedir is present ./logs/fern_test/renderonly_path_200000
+3 7.937716722488403
+savedir is present ./logs/fern_test/renderonly_path_200000
+4 7.929396390914917
+savedir is present ./logs/fern_test/renderonly_path_200000
+5 7.935275554656982
+savedir is present ./logs/fern_test/renderonly_path_200000
+6 8.151817798614502
+savedir is present ./logs/fern_test/renderonly_path_200000
+7 8.13375210762024
+savedir is present ./logs/fern_test/renderonly_path_200000
+8 8.01770806312561
+savedir is present ./logs/fern_test/renderonly_path_200000
+9 8.013766527175903
+savedir is present ./logs/fern_test/renderonly_path_200000
+10 8.004371166229248
+savedir is present ./logs/fern_test/renderonly_path_200000
+11 7.963707208633423
+savedir is present ./logs/fern_test/renderonly_path_200000
+12 7.935287952423096
+savedir is present ./logs/fern_test/renderonly_path_200000
+13 7.945861101150513
+savedir is present ./logs/fern_test/renderonly_path_200000
+14 8.221869230270386
+savedir is present ./logs/fern_test/renderonly_path_200000
+15 8.064814805984497
+savedir is present ./logs/fern_test/renderonly_path_200000
+16 8.000025272369385
+savedir is present ./logs/fern_test/renderonly_path_200000
+17 8.01991057395935
+savedir is present ./logs/fern_test/renderonly_path_200000
+18 8.001160621643066
+savedir is present ./logs/fern_test/renderonly_path_200000
+19 7.9413816928863525
+savedir is present ./logs/fern_test/renderonly_path_200000
+20 7.9428253173828125
+savedir is present ./logs/fern_test/renderonly_path_200000
+21 7.996898174285889
+savedir is present ./logs/fern_test/renderonly_path_200000
+22 8.222609281539917
+savedir is present ./logs/fern_test/renderonly_path_200000
+23 8.013548135757446
+savedir is present ./logs/fern_test/renderonly_path_200000
+24 7.942080020904541
+savedir is present ./logs/fern_test/renderonly_path_200000
+25 8.00246787071228
+savedir is present ./logs/fern_test/renderonly_path_200000
+26 7.945024728775024
+savedir is present ./logs/fern_test/renderonly_path_200000
+27 7.790783882141113
+savedir is present ./logs/fern_test/renderonly_path_200000
+28 7.813934087753296
+savedir is present ./logs/fern_test/renderonly_path_200000
+29 8.209414720535278
+savedir is present ./logs/fern_test/renderonly_path_200000
+30 8.149994373321533
+savedir is present ./logs/fern_test/renderonly_path_200000
+31 7.902149438858032
+savedir is present ./logs/fern_test/renderonly_path_200000
+32 7.960391044616699
+savedir is present ./logs/fern_test/renderonly_path_200000
+33 7.966116666793823
+savedir is present ./logs/fern_test/renderonly_path_200000
+34 7.816220045089722
+savedir is present ./logs/fern_test/renderonly_path_200000
+35 7.6779868602752686
+savedir is present ./logs/fern_test/renderonly_path_200000
+36 7.748091220855713
+savedir is present ./logs/fern_test/renderonly_path_200000
+37 8.041524648666382
+savedir is present ./logs/fern_test/renderonly_path_200000
+38 7.864400386810303
+savedir is present ./logs/fern_test/renderonly_path_200000
+39 7.822041749954224
+savedir is present ./logs/fern_test/renderonly_path_200000
+40 7.791492938995361
+savedir is present ./logs/fern_test/renderonly_path_200000
+41 7.803449630737305
+savedir is present ./logs/fern_test/renderonly_path_200000
+42 7.693400859832764
+savedir is present ./logs/fern_test/renderonly_path_200000
+43 7.676084756851196
+savedir is present ./logs/fern_test/renderonly_path_200000
+44 6.703286647796631
+savedir is present ./logs/fern_test/renderonly_path_200000
+45 6.78251051902771
+savedir is present ./logs/fern_test/renderonly_path_200000
+46 8.132652521133423
+savedir is present ./logs/fern_test/renderonly_path_200000
+47 7.990908861160278
+savedir is present ./logs/fern_test/renderonly_path_200000
+48 8.00605845451355
+savedir is present ./logs/fern_test/renderonly_path_200000
+49 8.011996984481812
+savedir is present ./logs/fern_test/renderonly_path_200000
+50 7.953792095184326
+savedir is present ./logs/fern_test/renderonly_path_200000
+51 7.965691089630127
+savedir is present ./logs/fern_test/renderonly_path_200000
+52 7.948773145675659
+savedir is present ./logs/fern_test/renderonly_path_200000
+53 8.1839120388031
+savedir is present ./logs/fern_test/renderonly_path_200000
+54 8.108018636703491
+savedir is present ./logs/fern_test/renderonly_path_200000
+55 8.002468824386597
+savedir is present ./logs/fern_test/renderonly_path_200000
+56 8.03425645828247
+savedir is present ./logs/fern_test/renderonly_path_200000
+57 7.97445273399353
+savedir is present ./logs/fern_test/renderonly_path_200000
+58 7.9561991691589355
+savedir is present ./logs/fern_test/renderonly_path_200000
+59 7.960702419281006
+savedir is present ./logs/fern_test/renderonly_path_200000
+60 8.009380340576172
+savedir is present ./logs/fern_test/renderonly_path_200000
+61 8.22132396697998
+savedir is present ./logs/fern_test/renderonly_path_200000
+62 8.026718139648438
+savedir is present ./logs/fern_test/renderonly_path_200000
+63 8.011426210403442
+savedir is present ./logs/fern_test/renderonly_path_200000
+64 8.036810874938965
+savedir is present ./logs/fern_test/renderonly_path_200000
+65 7.96400260925293
+savedir is present ./logs/fern_test/renderonly_path_200000
+66 7.936230659484863
+savedir is present ./logs/fern_test/renderonly_path_200000
+67 7.954177379608154
+savedir is present ./logs/fern_test/renderonly_path_200000
+68 8.05846357345581
+savedir is present ./logs/fern_test/renderonly_path_200000
+69 8.207939147949219
+savedir is present ./logs/fern_test/renderonly_path_200000
+70 7.995243549346924
+savedir is present ./logs/fern_test/renderonly_path_200000
+71 7.950603485107422
+savedir is present ./logs/fern_test/renderonly_path_200000
+72 7.920300245285034
+savedir is present ./logs/fern_test/renderonly_path_200000
+73 7.851136684417725
+savedir is present ./logs/fern_test/renderonly_path_200000
+74 7.809028625488281
+savedir is present ./logs/fern_test/renderonly_path_200000
+75 7.800040245056152
+savedir is present ./logs/fern_test/renderonly_path_200000
+76 8.266515970230103
+savedir is present ./logs/fern_test/renderonly_path_200000
+77 8.106318712234497
+savedir is present ./logs/fern_test/renderonly_path_200000
+78 7.934927463531494
+savedir is present ./logs/fern_test/renderonly_path_200000
+79 7.833985090255737
+savedir is present ./logs/fern_test/renderonly_path_200000
+80 7.818922519683838
+savedir is present ./logs/fern_test/renderonly_path_200000
+81 7.675122261047363
+savedir is present ./logs/fern_test/renderonly_path_200000
+82 7.690620183944702
+savedir is present ./logs/fern_test/renderonly_path_200000
+83 7.707827568054199
+savedir is present ./logs/fern_test/renderonly_path_200000
+84 8.023388862609863
+savedir is present ./logs/fern_test/renderonly_path_200000
+85 7.809428691864014
+savedir is present ./logs/fern_test/renderonly_path_200000
+86 7.834770679473877
+savedir is present ./logs/fern_test/renderonly_path_200000
+87 7.8340959548950195
+savedir is present ./logs/fern_test/renderonly_path_200000
+88 6.62322735786438
+savedir is present ./logs/fern_test/renderonly_path_200000
+89 6.78031063079834
+savedir is present ./logs/fern_test/renderonly_path_200000
+90 7.956248998641968
+savedir is present ./logs/fern_test/renderonly_path_200000
+91 7.936426162719727
+savedir is present ./logs/fern_test/renderonly_path_200000
+92 8.141662836074829
+savedir is present ./logs/fern_test/renderonly_path_200000
+93 8.132969856262207
+savedir is present ./logs/fern_test/renderonly_path_200000
+94 7.983301639556885
+savedir is present ./logs/fern_test/renderonly_path_200000
+95 7.9753098487854
+savedir is present ./logs/fern_test/renderonly_path_200000
+96 7.973928451538086
+savedir is present ./logs/fern_test/renderonly_path_200000
+97 7.933732748031616
+savedir is present ./logs/fern_test/renderonly_path_200000
+98 7.9488489627838135
+savedir is present ./logs/fern_test/renderonly_path_200000
+99 7.934813499450684
+savedir is present ./logs/fern_test/renderonly_path_200000
+100 8.18712830543518
+savedir is present ./logs/fern_test/renderonly_path_200000
+101 8.100770473480225
+savedir is present ./logs/fern_test/renderonly_path_200000
+102 8.027273178100586
+savedir is present ./logs/fern_test/renderonly_path_200000
+103 8.034356832504272
+savedir is present ./logs/fern_test/renderonly_path_200000
+104 7.990259408950806
+savedir is present ./logs/fern_test/renderonly_path_200000
+105 7.927931785583496
+savedir is present ./logs/fern_test/renderonly_path_200000
+106 7.9347083568573
+savedir is present ./logs/fern_test/renderonly_path_200000
+107 7.948904991149902
+savedir is present ./logs/fern_test/renderonly_path_200000
+108 8.221985816955566
+savedir is present ./logs/fern_test/renderonly_path_200000
+109 8.04011082649231
+savedir is present ./logs/fern_test/renderonly_path_200000
+110 7.970696926116943
+savedir is present ./logs/fern_test/renderonly_path_200000
+111 7.990106821060181
+savedir is present ./logs/fern_test/renderonly_path_200000
+112 7.980069160461426
+savedir is present ./logs/fern_test/renderonly_path_200000
+113 7.923159599304199
+savedir is present ./logs/fern_test/renderonly_path_200000
+114 7.9476354122161865
+savedir is present ./logs/fern_test/renderonly_path_200000
+115 7.987416982650757
+savedir is present ./logs/fern_test/renderonly_path_200000
+116 8.319082975387573
+savedir is present ./logs/fern_test/renderonly_path_200000
+117 7.954230308532715
+savedir is present ./logs/fern_test/renderonly_path_200000
+118 7.9440388679504395
+savedir is present ./logs/fern_test/renderonly_path_200000
+119 7.968595504760742
+savedir is present ./logs/fern_test/renderonly_path_200000
+Done rendering ./logs/fern_test/renderonly_path_200000
