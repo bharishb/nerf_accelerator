@@ -22,11 +22,11 @@ from load_LINEMOD import load_LINEMOD_data
 
 
 #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-os.environ["CUDA_VISIBLE_DEVICES"]=""
-device = torch.device('cpu')
+#os.environ["CUDA_VISIBLE_DEVICES"]=""
+device = torch.device('cuda:0')
 np.random.seed(0)
 DEBUG = False
-os.environ["CUDA_VISIBLE_DEVICES"]=""
+#os.environ["CUDA_VISIBLE_DEVICES"]=""
 #torch.set_default_device('cpu')
 
 
@@ -163,8 +163,6 @@ def render_path(render_poses, hwf, K, chunk, render_kwargs, gt_imgs=None, savedi
 
     t = time.time()
     for i, c2w in enumerate(tqdm(render_poses)):
-        if i==2:
-            break
         print(i, time.time() - t)
         t = time.time()
         print("image shape", np.shape(gt_imgs[int(i/6)]), gt_imgs[int(i/6)])
@@ -172,13 +170,15 @@ def render_path(render_poses, hwf, K, chunk, render_kwargs, gt_imgs=None, savedi
         print("rgb shape", np.shape(rgb), rgb)
         img_loss = accuracy(rgb,gt_imgs[int(i/6)])
         print("MSE Error :", img_loss)
+        pred = rgb.cpu().numpy()
+        exp = gt_imgs.cpu().numpy()
         fig = plt.figure()
         fig.add_subplot(1, 2, 1)
-        plt.imshow(rgb)
+        plt.imshow(pred)
         plt.axis('off')
         plt.title("Prediction")
         fig.add_subplot(1, 2, 2)
-        plt.imshow(gt_imgs[int(i/6)])
+        plt.imshow(exp[int(i/6)])
         plt.axis('off')
         plt.title("Expected")
         plt.savefig('prediction.png')
@@ -195,9 +195,9 @@ def render_path(render_poses, hwf, K, chunk, render_kwargs, gt_imgs=None, savedi
 
         if savedir is not None:
             print("savedir is present",savedir)
-            #rgb8 = to8b(rgbs[-1])
-            #filename = os.path.join(savedir, '{:03d}.png'.format(i))
-            #imageio.imwrite(filename, rgb8)
+            rgb8 = to8b(rgbs[-1])
+            filename = os.path.join(savedir, 'ft_train_{:03d}.png'.format(i))
+            imageio.imwrite(filename, rgb8)
 
 
     rgbs = np.stack(rgbs, 0)
@@ -267,10 +267,22 @@ def create_nerf(args):
         print(ckpt_w['pts_linears.4.weight'].size())
         print(ckpt_w['pts_linears.5.weight'].size())
         print(ckpt_w['pts_linears.6.weight'].size())
-        ckpt_w['pts_linears.3.weight'],ckpt_w['pts_linears.3.bias'] = merge_layers(ckpt_w['pts_linears.3.weight'], ckpt_w['pts_linears.3.bias'], ckpt_w['pts_linears.4.weight'], ckpt_w['pts_linears.4.bias'])
+        #ckpt_w['pts_linears.3.weight'],ckpt_w['pts_linears.3.bias'] = merge_layers(ckpt_w['pts_linears.3.weight'], ckpt_w['pts_linears.3.bias'], ckpt_w['pts_linears.4.weight'], ckpt_w['pts_linears.4.bias'])
         #ckpt_w['pts_linears.5.weight'],ckpt_w['pts_linears.5.bias'] = merge_layers(ckpt_w['pts_linears.5.weight'], ckpt_w['pts_linears.5.bias'], ckpt_w['pts_linears.6.weight'], ckpt_w['pts_linears.6.bias'])
         #ckpt_w['pts_linears.5.weight'],ckpt_w['pts_linears.5.bias'] = merge_layers(ckpt_w['pts_linears.5.weight'], ckpt_w['pts_linears.5.bias'], ckpt_w['pts_linears.7.weight'], ckpt_w['pts_linears.7.bias'])
-        #ckpt_w['pts_linears.6.weight'],ckpt_w['pts_linears.6.bias'] = merge_layers(ckpt_w['pts_linears.6.weight'], ckpt_w['pts_linears.6.bias'], ckpt_w['pts_linears.7.weight'], ckpt_w['pts_linears.7.bias'])
+        ckpt_w['pts_linears.6.weight'],ckpt_w['pts_linears.6.bias'] = merge_layers(ckpt_w['pts_linears.6.weight'], ckpt_w['pts_linears.6.bias'], ckpt_w['pts_linears.7.weight'], ckpt_w['pts_linears.7.bias'])
+        for param in model.pts_linears[0].parameters():
+            param.requires_grad = False
+        for param in model.pts_linears[1].parameters():
+            param.requires_grad = False
+        for param in model.pts_linears[2].parameters():
+            param.requires_grad = False
+        for param in model.pts_linears[3].parameters():
+            param.requires_grad = False
+        for param in model.pts_linears[4].parameters():
+            param.requires_grad = False
+        for param in model.pts_linears[5].parameters():
+            param.requires_grad = False
 
         #ckpt['pts_linears.5.bias']
         model.load_state_dict(ckpt_w)
@@ -702,6 +714,7 @@ def train():
     # Short circuit if only rendering out from trained model
     if args.render_only:
         print('RENDER ONLY')
+        images = torch.Tensor(images).to(device)
         with torch.no_grad():
             if args.render_test:
                 # render_test switches to test poses
@@ -716,8 +729,8 @@ def train():
             MODE='prof'
             if(MODE=='prof'):
                 with profile(
-                    #activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-                    activities=[ProfilerActivity.CPU],
+                    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+                    #activities=[ProfilerActivity.CPU],
                     with_stack=True,
                     profile_memory=True,
                     record_shapes=True
@@ -789,7 +802,7 @@ def train():
 
 
     #N_iters = 200000 + 1
-    N_iters = 1000
+    N_iters = 1000 #1000
     print('Begin')
     print('TRAIN views are', i_train)
     print('TEST views are', i_test)
@@ -799,7 +812,8 @@ def train():
     # writer = SummaryWriter(os.path.join(basedir, 'summaries', expname))
     
     start = start + 1
-    for i in trange(start, N_iters):
+    print("start :", start)
+    for i in trange(start, N_iters+start):
         time0 = time.time()
 
         # Sample random ray batch
@@ -854,6 +868,7 @@ def train():
 
         optimizer.zero_grad()
         img_loss = img2mse(rgb, target_s)
+        print("img loss : ", img_loss, "iteration :", i)
         trans = extras['raw'][...,-1]
         loss = img_loss
         psnr = mse2psnr(img_loss)
@@ -880,8 +895,9 @@ def train():
         #####           end            #####
 
         # Rest is logging
-        if i%args.i_weights==0:
-            path = os.path.join(basedir, expname, '{:06d}.tar'.format(i))
+        #if i%args.i_weights==0:
+        if i==start+N_iters:
+            path = os.path.join(basedir, expname, '{:06d}.tar'.format(i-N_iters))
             torch.save({
                 'global_step': global_step,
                 'network_fn_state_dict': render_kwargs_train['network_fn'].state_dict(),
@@ -971,6 +987,6 @@ def merge_layers(w1, b1, w2, b2):
     return w,b
 
 if __name__=='__main__':
-    #torch.set_default_tensor_type('torch.cuda.FloatTensor')
+    torch.set_default_tensor_type('torch.cuda.FloatTensor')
    # torch.set_default_tensor_type('torch.FloatTensor')
     train()

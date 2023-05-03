@@ -4,8 +4,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-device = torch.device('cpu')
+#device = torch.device('cpu')
 #torch.set_default_device('cpu')
+device = torch.device('cuda:0')
 
 # Misc
 img2mse = lambda x, y : torch.mean((x - y) ** 2)
@@ -30,9 +31,9 @@ class Embedder:
         N_freqs = self.kwargs['num_freqs']
         
         if self.kwargs['log_sampling']:
-            freq_bands = 2.**torch.linspace(0., max_freq, steps=N_freqs, device=device)
+            freq_bands = 2.**torch.linspace(0., max_freq, steps=N_freqs)
         else:
-            freq_bands = torch.linspace(2.**0., 2.**max_freq, steps=N_freqs, device=device)
+            freq_bands = torch.linspace(2.**0., 2.**max_freq, steps=N_freqs)
             
         for freq in freq_bands:
             for p_fn in self.kwargs['periodic_fns']:
@@ -100,7 +101,7 @@ class NeRF(nn.Module):
         #print("Input shape :",h.size())
         for i, l in enumerate(self.pts_linears):
             #if i not in [4,6,7]:
-            if i not in [6]:
+            if i not in [7]:
                 h = self.pts_linears[i](h)
                 #print("shape :",h.size(),"Layer i:",i)
                 h = F.relu(h)
