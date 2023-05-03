@@ -99,9 +99,11 @@ class NeRF(nn.Module):
         h = input_pts
         #print("Input shape :",h.size())
         for i, l in enumerate(self.pts_linears):
-            h = self.pts_linears[i](h)
-            #print("shape :",h.size(),"Layer i:",i)
-            h = F.relu(h)
+            #if i not in [4,6,7]:
+            if i not in [6]:
+                h = self.pts_linears[i](h)
+                #print("shape :",h.size(),"Layer i:",i)
+                h = F.relu(h)
             if i in self.skips:
                 h = torch.cat([input_pts, h], -1)
 

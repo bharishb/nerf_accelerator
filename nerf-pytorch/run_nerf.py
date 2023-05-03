@@ -163,11 +163,25 @@ def render_path(render_poses, hwf, K, chunk, render_kwargs, gt_imgs=None, savedi
 
     t = time.time()
     for i, c2w in enumerate(tqdm(render_poses)):
-        if i == 3:
+        if i==2:
             break
         print(i, time.time() - t)
         t = time.time()
+        print("image shape", np.shape(gt_imgs[int(i/6)]), gt_imgs[int(i/6)])
         rgb, disp, acc, _ = render(H, W, K, chunk=chunk, c2w=c2w[:3,:4], **render_kwargs)
+        print("rgb shape", np.shape(rgb), rgb)
+        img_loss = accuracy(rgb,gt_imgs[int(i/6)])
+        print("MSE Error :", img_loss)
+        fig = plt.figure()
+        fig.add_subplot(1, 2, 1)
+        plt.imshow(rgb)
+        plt.axis('off')
+        plt.title("Prediction")
+        fig.add_subplot(1, 2, 2)
+        plt.imshow(gt_imgs[int(i/6)])
+        plt.axis('off')
+        plt.title("Expected")
+        plt.savefig('prediction.png')
         rgbs.append(rgb.cpu().numpy())
         disps.append(disp.cpu().numpy())
         if i==0:
@@ -245,7 +259,21 @@ def create_nerf(args):
         optimizer.load_state_dict(ckpt['optimizer_state_dict'])
 
         # Load model
-        model.load_state_dict(ckpt['network_fn_state_dict'])
+        ckpt_w = ckpt['network_fn_state_dict']
+        print(ckpt_w['pts_linears.0.weight'].size())
+        print(ckpt_w['pts_linears.1.weight'].size())
+        print(ckpt_w['pts_linears.2.weight'].size())
+        print(ckpt_w['pts_linears.3.weight'].size())
+        print(ckpt_w['pts_linears.4.weight'].size())
+        print(ckpt_w['pts_linears.5.weight'].size())
+        print(ckpt_w['pts_linears.6.weight'].size())
+        ckpt_w['pts_linears.3.weight'],ckpt_w['pts_linears.3.bias'] = merge_layers(ckpt_w['pts_linears.3.weight'], ckpt_w['pts_linears.3.bias'], ckpt_w['pts_linears.4.weight'], ckpt_w['pts_linears.4.bias'])
+        #ckpt_w['pts_linears.5.weight'],ckpt_w['pts_linears.5.bias'] = merge_layers(ckpt_w['pts_linears.5.weight'], ckpt_w['pts_linears.5.bias'], ckpt_w['pts_linears.6.weight'], ckpt_w['pts_linears.6.bias'])
+        #ckpt_w['pts_linears.5.weight'],ckpt_w['pts_linears.5.bias'] = merge_layers(ckpt_w['pts_linears.5.weight'], ckpt_w['pts_linears.5.bias'], ckpt_w['pts_linears.7.weight'], ckpt_w['pts_linears.7.bias'])
+        #ckpt_w['pts_linears.6.weight'],ckpt_w['pts_linears.6.bias'] = merge_layers(ckpt_w['pts_linears.6.weight'], ckpt_w['pts_linears.6.bias'], ckpt_w['pts_linears.7.weight'], ckpt_w['pts_linears.7.bias'])
+
+        #ckpt['pts_linears.5.bias']
+        model.load_state_dict(ckpt_w)
         if model_fine is not None:
             model_fine.load_state_dict(ckpt['network_fine_state_dict'])
 
@@ -559,10 +587,14 @@ def train():
         images, poses, bds, render_poses, i_test = load_llff_data(args.datadir, args.factor,
                                                                   recenter=True, bd_factor=.75,
                                                                   spherify=args.spherify)
+        print(poses, "poses shape :", len(poses))
         hwf = poses[0,:3,-1]
+        print(hwf, "hwf shape :",len(hwf))
         poses = poses[:,:3,:4]
         print('Loaded llff', images.shape, render_poses.shape, hwf, args.datadir)
-        if not isinstance(i_test, list):
+        print("i_test :", i_test, "i_test shape", np.shape(i_test))
+        print("render_poses :", render_poses, "render_poses shapes", len(render_poses))
+        if not isinstance(i_test, list):  # checking data type : Not a list , make a list
             i_test = [i_test]
 
         if args.llffhold > 0:
@@ -676,7 +708,7 @@ def train():
                 images = images[i_test]
             else:
                 # Default is smoother render_poses path
-                images = None
+                images = images
 
             testsavedir = os.path.join(basedir, expname, 'renderonly_{}_{:06d}'.format('test' if args.render_test else 'path', start))
             os.makedirs(testsavedir, exist_ok=True)
@@ -693,7 +725,13 @@ def train():
                     with torch.no_grad():
                         print('running...');
                         t0 = time.perf_counter()
+                        print("images :", images, "images shape", np.shape(images))
                         rgbs, _ = render_path(render_poses, hwf, K, args.chunk, render_kwargs_test, gt_imgs=images, savedir=testsavedir, render_factor=args.render_factor)
+                        
+                        
+                        print("rgbs :", rgbs, "rgbs shape", np.shape(rgbs))
+                        #img_loss = accuracy(rgbs,images)
+                        #print("accuracy :", img_loss)
                         prof.step()
                         t1 = time.perf_counter()
             elif(MODE=='ncu'):
@@ -924,6 +962,13 @@ def train():
 
         global_step += 1
 
+def accuracy(rgb, target):
+    img_loss = img2mse(rgb, target)
+    return img_loss
+def merge_layers(w1, b1, w2, b2):
+    w = torch.matmul(w2,w1)
+    b = torch.add(torch.matmul(w2,b1), b2) 
+    return w,b
 
 if __name__=='__main__':
     #torch.set_default_tensor_type('torch.cuda.FloatTensor')
