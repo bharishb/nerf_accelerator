@@ -1,10 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My Website</title>
+	<title>My Research Project</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			margin: 0;
+			padding: 0;
+			background-color: #f0f0f0;
+		}
+
+		header {
+			background-color: #121111;
+			background-image: url('content/background-realistic-abstract-technology-particle_23-2148431735.avif');
+			background-size: 1550px;
+			color: white;
+			padding: 200px;
+			text-align: center;
+
+			font-size: 36px;
+			margin-bottom: 20px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+		}
+
+		section {
+			background-color: white;
+			padding: 30px;
+			margin-bottom: 40px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+		h2 {
+			font-size: 30px;
+			margin-top: 0;
+			color: #333;
+			text-transform: uppercase;
+			text-align:center;
+			font-weight: 600;
+			letter-spacing: 1px;
+			border-bottom: 2px solid #ccc;
+			padding-bottom: 10px;
+			margin-bottom: 30px;
+		}
+
+		p {
+			line-height: 1.6;
+			color: #666;
+			margin-bottom: 20px;
+		}
+
+		a {
+			color: #333;
+			text-decoration: none;
+			font-weight: 600;
+			transition: all 0.2s ease-in-out;
+		}
+
+		a:hover {
+			color: #0080ff;
+		}
+
+		button {
+			background-color: #0080ff;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			font-size: 18px;
+			font-weight: 600;
+			letter-spacing: 1px;
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+		}
+
+		button:hover {
+			background-color: #0059b3;
+		}
+	</style>
 </head>
 <body>
-	<h1>Welcome to my website!</h1>
-	<p>This is a sample webpage created using HTML.</p>
+	<header>
+		<h1>NeRF Accelerator</h1>
+	</header>
+
+	<section>
+		<h2>Introduction</h2>
+		<p> NeRF, which stands for Neural Radiance Fields, is a state-of-the-art method for 3D scene reconstruction from 2D images. It is a neural network-based approach that can create photo-realistic renderings of objects and scenes by modeling the underlying 3D geometry and appearance of the objects in a scene. The key idea behind NeRF is to represent a scene as a continuous function that can be evaluated at any point in space to determine the color and opacity of the objects in the scene. By training a neural network on a set of input images and corresponding camera positions, NeRF learns to approximate this function and can generate novel views of the scene from any viewpoint. NeRF has shown impressive results in a variety of applications, including virtual reality, robotics, and augmented reality, and has the potential to revolutionize how we interact with and perceive digital content.
+		<br>
+		
+			NeRF is computationally very intensive, needing a large amount of GPU memory. It also needs significant computation resources to formulate the novel view of the object. Various papers have been published in this area to decrease the training time from hours to minutes. But the power consumption of Nerf training and inference stays as high as 300W which makes it impossible to deploy in power bound environments like edge devices. In this project, We would like to explore recent papers in this field like Neural Graphics Primitives with Multiresolution Hash Encoding of inputs from a computer architecture point of view and compare it with its contemporaries. We would start with implementing the existing solution, do a workload/performance analysis with computation breakdown. This will help us come up with a hardware software codesign approach with optimizations like decreasing precision with a performance tradeoff with decrease in memory footprint. If time permits, we will design and implement an accelerator on fpga if the hardware accelerator is the solution to design a low power nerf from our analysis. 
+		</br>
+			It is important to deploy on edge devices, because they offer Virtual Reality, Augmented Reality in real-time and mission-critical applications like Robotics, Surgery, Navigation. Deploying on edge devices also helps in data privacy and security. It also helps in reducing latency and improves overall performance by processing data locally, which leads to less input/output delay.
+			We are a team filled with each of us having a background in machine learning and computer architecture respectively. We felt this is an ideal project which we can contribute to in the emerging VR/AR technologies.
+		</p>
+	</section>
+
+	<section>
+		<h2>Related Work</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+	</section>
+
+	<section>
+		<h2>Approach</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+	</section>
+
+	<section>
+		<h2>Results</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+	</section>
+
+	<section>
+		<h2>Future Work</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+	</section>
 </body>
 </html>
