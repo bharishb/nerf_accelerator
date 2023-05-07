@@ -16,7 +16,7 @@
 			background-image: url('content/background-realistic-abstract-technology-particle_23-2148431735.avif');
 			background-size: 1550px;
 			color: white;
-			padding: 200px;
+			padding: 100px;
 			text-align: center;
 
 			font-size: 36px;
@@ -83,38 +83,150 @@
 <body>
 	<header>
 		<h1>NeRF Accelerator</h1>
+		<div style="text-align:right;"><h4>Chinmay Hota</h4></div>
+		<div style="text-align:right;"><h4>Batchu S S S S Harish Babu</h4></div>
 	</header>
 
 	<section>
 		<h2>Introduction</h2>
-		<p> NeRF, which stands for Neural Radiance Fields, is a state-of-the-art method for 3D scene reconstruction from 2D images. It is a neural network-based approach that can create photo-realistic renderings of objects and scenes by modeling the underlying 3D geometry and appearance of the objects in a scene. The key idea behind NeRF is to represent a scene as a continuous function that can be evaluated at any point in space to determine the color and opacity of the objects in the scene. By training a neural network on a set of input images and corresponding camera positions, NeRF learns to approximate this function and can generate novel views of the scene from any viewpoint. NeRF has shown impressive results in a variety of applications, including virtual reality, robotics, and augmented reality, and has the potential to revolutionize how we interact with and perceive digital content.
-		<br>
+		<p> <b>NeRF</b>, which stands for Neural Radiance Fields, is a state-of-the-art method for 3D scene reconstruction from 2D images. 
+			It is a neural network-based approach that can create photo-realistic renderings of objects and scenes by modeling the underlying 3D geometry and appearance of the objects in a scene. 
+			The key idea behind NeRF is to represent a scene as a continuous function that can be evaluated at any point in space to determine the color and opacity of the objects in the scene. By training a neural network on a set of input images and corresponding camera positions, NeRF learns to approximate this function and can generate novel views of the scene from any viewpoint.
+			 NeRF has shown impressive results in a variety of applications, including virtual reality, robotics, and augmented reality, and has the potential to revolutionize how we interact with and perceive digital content.</p>	
+		<p>	NeRF is computationally very intensive, needing a large amount of <b>GPU</b> memory. 
+			It also needs significant computation resources to formulate the novel view of the object. 
+			Various papers have been published in this area to decrease the training time from hours to minutes.
+			 But the power consumption of Nerf training and inference stays as high as <b>300W</b> which makes it impossible to deploy in power bound environments like edge devices. 
+			 In this project, We would like to explore recent papers in this field like Neural Graphics Primitives with Multiresolution Hash Encoding of inputs from a computer architecture point of view and compare it with its contemporaries. 
+			 We would start with implementing the existing solution, do a workload/performance analysis with computation breakdown. This will help us come up with a hardware software codesign approach with optimizations like decreasing precision with a performance tradeoff with decrease in memory footprint.
+			  If time permits, we will design and implement an accelerator on fpga if the hardware accelerator is the solution to design a low power nerf from our analysis. </p>
+		<p>It is important to deploy on edge devices, because they offer <b>Virtual Reality, Augmented Reality</b> in real-time and mission-critical applications like Robotics, Surgery, Navigation. Deploying on edge devices also helps in data privacy and security. It also helps in reducing latency and improves overall performance by processing data locally, which leads to less input/output delay.
+			We are a team filled with each of us having a background in machine learning and computer architecture respectively. We felt this is an ideal project which we can contribute to in the emerging VR/AR technologies.</p>
+			
+	</section>
+
+	<section>
+		<h2>NeRF Architecture</h2>
+		<P>A <b>Neural Radiance Field</b> is the encoding of an entire 3D scene into the parameters of a neural network. 
+			To render a scene from any new viewpoint, the neural network needs to learn the RGB color and volume density σ (i.e., whether the point is "occupied" or not) of each point in space. 
+			The volume density at a point is independent of the viewpoint, but the color changes with the viewpoint (e.g., the object seen from a different angle changes), so the neural network actually needs to learn the color (r, g, b) 
+			and volume density σ of a point (x, y, z) under different camera angles (θ, φ) (i.e., latitude and longitude).</P>
+			<p>Therefore, the input to the neural radiance field is a five-dimensional vector (x, y, z, θ, φ), and the output is a four-dimensional vector (r, g, b, σ):
+				<div style="text-align:center;">
+					
+					<img src="content/Capture.PNG" />	
+				</div>
+			</p>
+
+		<p><b>Volume Rendering </b>
+		can "flatten" the neural field into a 2D image, which will then be compared with a reference image to generate loss. 
+		This process is differentiable, so it can be used to train the network. 
+		Volume Rendering equation is given by - 
+		<div><img src="content/vr.PNG" ></div>
+		<p>In the formula, T(t) represents the proportion of light transmitted to point t, 
+			and σ(t)dt represents the proportion of light blocked by a small neighborhood near point t. 
+			The product of the two is the proportion of light reaching t and being blocked at t, 
+			multiplied by the color c(r(t), d) of that point, which is the contribution of this point to the final color of the ray. 
+			The integral interval [t_n, t_f] represents the nearest intersection point t_{near} and the farthest intersection point t_{far} of the ray with the medium.</p>
 		
-			NeRF is computationally very intensive, needing a large amount of GPU memory. It also needs significant computation resources to formulate the novel view of the object. Various papers have been published in this area to decrease the training time from hours to minutes. But the power consumption of Nerf training and inference stays as high as 300W which makes it impossible to deploy in power bound environments like edge devices. In this project, We would like to explore recent papers in this field like Neural Graphics Primitives with Multiresolution Hash Encoding of inputs from a computer architecture point of view and compare it with its contemporaries. We would start with implementing the existing solution, do a workload/performance analysis with computation breakdown. This will help us come up with a hardware software codesign approach with optimizations like decreasing precision with a performance tradeoff with decrease in memory footprint. If time permits, we will design and implement an accelerator on fpga if the hardware accelerator is the solution to design a low power nerf from our analysis. 
-		</br>
-			It is important to deploy on edge devices, because they offer Virtual Reality, Augmented Reality in real-time and mission-critical applications like Robotics, Surgery, Navigation. Deploying on edge devices also helps in data privacy and security. It also helps in reducing latency and improves overall performance by processing data locally, which leads to less input/output delay.
-			We are a team filled with each of us having a background in machine learning and computer architecture respectively. We felt this is an ideal project which we can contribute to in the emerging VR/AR technologies.
+		</p>
+		
+
+	</section>
+
+	<section>
+		<h2>Neural Network</h2>
+		<p>The neural Network consists of 8 layers. The input to the Neural Network is in the form of (Batch_Size, Number_of_rays, Number_of_Samples, 3). 
+			Here Number_of_Samples represents the number of segments on each ray (64) and Number_of_rays represents the number of rays per batch. It’s initialized to 4096 rays. The output of the Neural Network is (Batch_size, Number_of_rays, 4), where 4 represents the color and opacity along the x,y coordinates of the ray. The network has 8 hidden layers, each with 256 neurons, and uses the ReLU activation function for all layers except the last one. The output layer used a sigmoid activation function for the alpha channel and a ReLU activation function for the color channels. The loss function used in NERF consists of two components: the photometric loss L_phot and the regularization loss L_reg. The photometric loss measures the difference between the predicted and ground truth pixel values, while the regularization loss encourages the smoothness of the neural radiance field. 
+			The overall loss function is given by:L = L_phot + λ L_regwhere λ is a hyperparameter that controls the weight of the regularization term.
+			<div><img src="content/NN.PNG" ></div>
 		</p>
 	</section>
 
 	<section>
-		<h2>Related Work</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
-	</section>
-
-	<section>
 		<h2>Approach</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+		<p>
+		After witnessing the pytorch GPU Profiling statistics, We observed that 70% of the GPU time was being spent on Matrix Multiplications.
+		So, We proposed an approach that approximates the overall computation with less number of operations.
+	</p>
+	
+		<h3>Merging Linear Layers - </h3>
+		<p>
+		The first optimization involves removing non linear functions between last three linear layers, effectively replacing the ReLU function with Identity function.
+			From an Inference point of view, We can summarize that the last three layers are equivalent to one linear layer. The mathematical model for merging two linear layers can be found below - 
+			<div><img src="content/math_ll.PNG" width="700" height="150" ></div></p>
+			<p>
+		Based of the above mathematical model, the seventh and the sixth layers are merged and the resultant layer is merged with the layer. 
+		</p>
+
+		<h3>Fine Tuning - </h3>
+		<p>
+			Fine-tuning in machine learning is a process of further training a pre-trained model on a new dataset with the goal of improving its performance on a specific task. 
+			In fine-tuning, we use a pre-trained model that has been trained on a large dataset, and then continue training the model on a smaller, domain-specific dataset.
+
+			After importing a pre-trained model and merging the three layers, We fixed the non-merged layers, and then fine tuned the merged layers. Since the optimization problem has changed 
+			and the weights were initliazed with much better values, We converge to a solution much faster than a regular model.
+			<div><img src="content/ft.PNG" width="700" height="300" ></div>
+		</p>
+
+		<h3>Floating Point 16 - </h3>
+		<p>
+			In NeRF (Neural Radiance Fields), which is a method for synthesizing novel views of a scene, the default precision used for representing the network parameters is 32-bit floating-point numbers. However, using 32-bit floating-point numbers can be memory-intensive and slow, especially for large models.
+            To address this issue, We proposed the use of 16-bit floating-point numbers, also known as half-precision, to represent the network parameters. Half-precision numbers use only 16 bits to represent the same range of values as 32-bit floating-point numbers, reducing the memory requirements by half.
+		</p>
 	</section>
 
 	<section>
 		<h2>Results</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+		<h3>Un-Optimized NeRF - </h3>
+		<p>
+			We performed PyTorch Profiling on Nvidia V100 GPU. These are the results - 
+			<div><img src="content/PR.PNG"  width="1500" height="300"></div>
+		</p><p>
+			As you can observe from the graph above, the above numbers show that Matrix Multiplications take about 70% of the GPU resources.
+			<div><img src="content/unpot.PNG" ></div>
+
+		</p>
+
+		<h3>After Merging Layers - </h3>
+		<p>
+			We observed accuracy loss after merging three layers. But the context still remained intact.
+			<div><img src="content/merged_ll.PNG"  ></div>
+		</p>
+
+		<h3>After Fine-Tuning - </h3>
+		<p>
+			We observed much better results when we fine-tuned the model, We also observed much less loss in accuracy. 
+			The Matrix Multiplication mem footprint - 2621.75Gb (21% reduction in memory). The time taken reduced to 30 seconds (33%).
+			<div><img src="content/ft_ll.PNG"  ></div>
+			<div><img src="content/ft_graph.PNG"  ></div>
+		</p>
+
+		<h3>After FP-16 Conversion - </h3>
+		<p>
+			This mixed-precision training approach allows for significant memory savings without sacrificing too much accuracy. 
+			However, We also careful tuned the hyperparameters such as learning rate and weight decay to ensure the model continues to converge properly with the reduced precision.
+			The memory footprint reduced to 1310.87Gb (60% reduction in memory with less effect on accuracy)
+			<div><img src="content/f16.PNG"  ></div>
+			<div><img src="content/f16_ll.PNG"  ></div>
+			<div><img src="content/fp16_2.PNG"  ></div>
+		</p>
 	</section>
 
 	<section>
 		<h2>Future Work</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod auctor diam, ac bibendum turpis pulvinar id. Aliquam erat volutpat. Praesent vulputate erat et augue scelerisque auctor. Proin bibendum leo eget sapien interdum, sed elementum ex efficitur.</p>
+		<p>
+			
+			<ul>
+				<br> - Reduction in computation & memory footprint significantly reduces overall energy consumption making Nerf deployable at Edge.</br>
+				<br> - Allow for approximation & inturn accuracy loss in the neural network(NN) and filter the image post the NN prediction. </br>
+				<br> - The reduction in NN (inturn power)  with little overhead of filtering makes the processing pipeline look like NN + Image processing pipeline</br>
+				<br> - Mixed Precision Training to gain accuracy from FP16</br>
+				<br> - Building a Custom hardware with streaming architecture. </br>
+
+			  </ul>
+			  
+		</p>
 	</section>
 </body>
 </html>
