@@ -214,17 +214,30 @@
 	</section>
 
 	<section>
+		<h2>Challenges</h2>
+		<p>
+			
+				<br> - Existing Non-Modular Code which was then converted into modular code to better implement the profiling features in both training and inference.</br>
+				<br> - GPU was not always available, so we had to implement CPU version of the model to avoid bottleneck issues in our development. </br>
+				<br> - NeRF involves a number of hyperparameters that need to be tuned, such as the number of network layers, the depth of the network, the number of samples per pixel, and the learning rate. Finding the optimal set of hyperparameters required multiple trail and runs.</br>
+				<br> - NeRF requires a large amount of high-quality training data, which can be challenging to acquire. In addition, preparing the data for training, such as pre-processing the images and camera poses, can be time-consuming and require careful attention to detail.</br>
+				<br> - Implementing FP16 was not straightforward since the code has both PyTorch tensors as well as Numpy modules. </br>
+
+			  
+		</p>
+	</section>
+
+	<section>
 		<h2>Future Work</h2>
 		<p>
 			
-			<ul>
+			
 				<br> - Reduction in computation & memory footprint significantly reduces overall energy consumption making Nerf deployable at Edge.</br>
 				<br> - Allow for approximation & inturn accuracy loss in the neural network(NN) and filter the image post the NN prediction. </br>
 				<br> - The reduction in NN (inturn power)  with little overhead of filtering makes the processing pipeline look like NN + Image processing pipeline</br>
 				<br> - Mixed Precision Training to gain accuracy from FP16</br>
 				<br> - Building a Custom hardware with streaming architecture. </br>
 
-			  </ul>
 			  
 		</p>
 	</section>
