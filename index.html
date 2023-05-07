@@ -139,7 +139,7 @@
 		<p>The neural Network consists of 8 layers. The input to the Neural Network is in the form of (Batch_Size, Number_of_rays, Number_of_Samples, 3). 
 			Here Number_of_Samples represents the number of segments on each ray (64) and Number_of_rays represents the number of rays per batch. It’s initialized to 4096 rays. The output of the Neural Network is (Batch_size, Number_of_rays, 4), where 4 represents the color and opacity along the x,y coordinates of the ray. The network has 8 hidden layers, each with 256 neurons, and uses the ReLU activation function for all layers except the last one. The output layer used a sigmoid activation function for the alpha channel and a ReLU activation function for the color channels. The loss function used in NERF consists of two components: the photometric loss L_phot and the regularization loss L_reg. The photometric loss measures the difference between the predicted and ground truth pixel values, while the regularization loss encourages the smoothness of the neural radiance field. 
 			The overall loss function is given by:L = L_phot + λ L_regwhere λ is a hyperparameter that controls the weight of the regularization term.
-			<div><img src="content/neuralnet.PNG" ></div>
+			<div><img src="content/NN.PNG" ></div>
 		</p>
 	</section>
 
